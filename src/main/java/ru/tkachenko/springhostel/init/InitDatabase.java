@@ -27,10 +27,11 @@ public class InitDatabase {
             return;
         }
 
+        int countRooms = 15;
         int maxCapacity = 12;
         int minCapacity = 2;
 
-        for (int i = 0; i < 15; ) {
+        for (int i = 0; i < countRooms; ) {
 
             byte rndCapacity = (byte) (new Random().nextInt(maxCapacity - minCapacity + 1) + minCapacity);
 
@@ -47,9 +48,9 @@ public class InitDatabase {
             Gender guestGender = room.getTypeRoom() == RoomType.MALE ? Gender.MALE : Gender.FEMALE;
             for (int j = 0; j < rndGuestCount; ) {
                 Guest guest = new Guest().builder()
-                        .lastName("lastName_" + ++j)
-                        .firstName("firstName_" + j)
-                        .middleName("middleName_" + j)
+                        .lastName("lastName_" + i + ++j)
+                        .firstName("firstName_" + i + j)
+                        .middleName("middleName_" + i + j)
                         .gender(guestGender)
                         .room(room)
                         .build();
