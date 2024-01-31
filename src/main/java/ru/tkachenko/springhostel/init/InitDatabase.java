@@ -45,13 +45,13 @@ public class InitDatabase {
             roomRepository.save(room);
 
             int rndGuestCount = new Random().nextInt(rndCapacity + 1);
-            Gender guestGender = room.getTypeRoom() == RoomType.MALE ? Gender.MALE : Gender.FEMALE;
+            GenderType guestGender = room.getTypeRoom() == RoomType.MALE ? GenderType.MALE : GenderType.FEMALE;
             for (int j = 0; j < rndGuestCount; ) {
                 Guest guest = new Guest().builder()
                         .lastName("lastName_" + i + ++j)
                         .firstName("firstName_" + i + j)
                         .middleName("middleName_" + i + j)
-                        .gender(guestGender)
+                        .genderType(guestGender)
                         .room(room)
                         .build();
                 guestRepository.save(guest);

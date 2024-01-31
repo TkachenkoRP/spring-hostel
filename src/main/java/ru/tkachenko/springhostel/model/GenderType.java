@@ -1,5 +1,5 @@
 package ru.tkachenko.springhostel.model;
 
-public enum Gender {
+public enum GenderType {
     MALE, FEMALE
 }

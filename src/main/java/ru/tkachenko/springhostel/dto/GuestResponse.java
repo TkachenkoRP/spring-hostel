@@ -3,7 +3,7 @@ package ru.tkachenko.springhostel.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.tkachenko.springhostel.model.Gender;
+import ru.tkachenko.springhostel.model.GenderType;
 
 import java.time.Instant;
 
@@ -15,7 +15,7 @@ public class GuestResponse {
     private String lastName;
     private String firstName;
     private String middleName;
-    private Gender gender;
+    private GenderType genderType;
     private Instant createAt;
     private Instant updateAt;
     private RoomResponse room;

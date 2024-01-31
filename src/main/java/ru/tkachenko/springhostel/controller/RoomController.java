@@ -1,5 +1,6 @@
 package ru.tkachenko.springhostel.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +35,14 @@ public class RoomController {
     }
 
     @PostMapping
-    public ResponseEntity<RoomResponse> create(@RequestBody UpsertRoomRequest request) {
+    public ResponseEntity<RoomResponse> create(@RequestBody @Valid UpsertRoomRequest request) {
         Room created = roomService.save(roomMapper.requestToEntity(request));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(roomMapper.entityToResponse(created));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RoomResponse> update(@PathVariable Long id, @RequestBody UpsertRoomRequest request) {
+    public ResponseEntity<RoomResponse> update(@PathVariable Long id, @RequestBody @Valid UpsertRoomRequest request) {
         Room updated = roomService.update(roomMapper.requestToEntity(id, request));
         return ResponseEntity.ok(roomMapper.entityToResponse(updated));
     }

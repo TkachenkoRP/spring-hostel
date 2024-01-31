@@ -36,4 +36,8 @@
         </createTable>
     </changeSet>
 
+    <changeSet author="TkachenkoRP" id="2023-01-31-changeGenderColumn">
+        <renameColumn tableName="guests" oldColumnName="gender" newColumnName="gender_type"/>
+    </changeSet>
+
 </databaseChangeLog>

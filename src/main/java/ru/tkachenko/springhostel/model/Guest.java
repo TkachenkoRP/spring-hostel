@@ -28,7 +28,8 @@ public class Guest {
     @Column(name = "middle_name")
     private String middleName;
     @Enumerated(value = EnumType.STRING)
-    private Gender gender;
+    @Column(name = "gender_type")
+    private GenderType genderType;
     @Column(name = "create_at")
     @CreationTimestamp
     private Instant createAt;
