@@ -2,11 +2,13 @@ package ru.tkachenko.springhostel.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.tkachenko.springhostel.exception.EntityNotFoundException;
 import ru.tkachenko.springhostel.model.Room;
 import ru.tkachenko.springhostel.repository.RoomRepository;
 import ru.tkachenko.springhostel.service.RoomService;
 import ru.tkachenko.springhostel.utils.BeanUtils;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -23,7 +25,9 @@ public class DatabaseRoomService implements RoomService {
     @Override
     public Room findById(Long id) {
         return repository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
+                        "Комната с ID {0} не найдена!", id
+                )));
     }
 
     @Override

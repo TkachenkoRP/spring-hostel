@@ -2,11 +2,13 @@ package ru.tkachenko.springhostel.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.tkachenko.springhostel.exception.EntityNotFoundException;
 import ru.tkachenko.springhostel.model.Guest;
 import ru.tkachenko.springhostel.repository.GuestRepository;
 import ru.tkachenko.springhostel.service.GuestService;
 import ru.tkachenko.springhostel.utils.BeanUtils;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -23,7 +25,9 @@ public class DatabaseGuestService implements GuestService {
     @Override
     public Guest findById(Long id) {
         return repository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
+                        "Гость с ID {0} не найден!", id
+                )));
     }
 
     @Override
