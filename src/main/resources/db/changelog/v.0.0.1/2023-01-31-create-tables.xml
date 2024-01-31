@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet author="TkachenkoRP" id="2023-01-31-createRoomTable">
+        <createTable tableName="rooms">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="floor" type="TINYINT"/>
+            <column name="room_number" type="TINYINT"/>
+            <column name="room_type" type="VARCHAR(10)"/>
+            <column name="comfort_type" type="VARCHAR(50)"/>
+            <column name="capacity" type="TINYINT"/>
+            <column name="create_at" type="TIMESTAMP"/>
+            <column name="update_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="TkachenkoRP" id="2023-01-31-createGuestTable">
+        <createTable tableName="guests">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="room_id" type="BIGINT">
+                <constraints foreignKeyName="fk_guest_room" references="rooms(id)" nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(100)"/>
+            <column name="first_name" type="VARCHAR(100)"/>
+            <column name="middle_name" type="VARCHAR(100)"/>
+            <column name="gender" type="VARCHAR(10)"/>
+            <column name="create_at" type="TIMESTAMP"/>
+            <column name="update_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
