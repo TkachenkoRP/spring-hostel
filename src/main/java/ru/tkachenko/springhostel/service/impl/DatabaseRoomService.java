@@ -21,13 +21,8 @@ public class DatabaseRoomService implements RoomService {
     private final RoomRepository repository;
 
     @Override
-    public List<Room> filterBy(RoomFilter filter) {
+    public List<Room> findAll(RoomFilter filter) {
         return repository.findAll(RoomSpecification.withFilter(filter));
-    }
-
-    @Override
-    public List<Room> findAll() {
-        return repository.findAll();
     }
 
     @Override

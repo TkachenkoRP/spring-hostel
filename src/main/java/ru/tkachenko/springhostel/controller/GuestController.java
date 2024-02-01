@@ -23,16 +23,9 @@ public class GuestController {
     private final GuestService guestService;
     private final GuestMapper guestMapper;
 
-    @GetMapping("/filter")
-    public ResponseEntity<List<GuestForListResponse>> filterBy(@Valid GuestFilter filter) {
-        return ResponseEntity.ok(guestService.filterBy(filter)
-                .stream().map(guestMapper::entityToResponseList)
-                .collect(Collectors.toList()));
-    }
-
     @GetMapping
-    public ResponseEntity<List<GuestForListResponse>> findAll() {
-        return ResponseEntity.ok(guestService.findAll()
+    public ResponseEntity<List<GuestForListResponse>> findAll(@Valid GuestFilter filter) {
+        return ResponseEntity.ok(guestService.findAll(filter)
                 .stream().map(guestMapper::entityToResponseList)
                 .collect(Collectors.toList()));
     }

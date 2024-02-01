@@ -42,7 +42,7 @@ public class GuestControllerTest extends AbstractTestController {
 
         String typeGender = "MALE";
 
-        String actualResponse = mockMvc.perform(get("/api/guest/filter?typeGender=" + typeGender))
+        String actualResponse = mockMvc.perform(get("/api/guest?typeGender=" + typeGender))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -64,7 +64,7 @@ public class GuestControllerTest extends AbstractTestController {
 
         Long roomId = 4L;
 
-        String actualResponse = mockMvc.perform(get("/api/guest/filter?roomId=" + roomId))
+        String actualResponse = mockMvc.perform(get("/api/guest?roomId=" + roomId))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -86,7 +86,7 @@ public class GuestControllerTest extends AbstractTestController {
 
         String typeComfort = "LUXURY";
 
-        String actualResponse = mockMvc.perform(get("/api/guest/filter?typeComfort=" + typeComfort))
+        String actualResponse = mockMvc.perform(get("/api/guest?typeComfort=" + typeComfort))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -110,7 +110,7 @@ public class GuestControllerTest extends AbstractTestController {
         Long roomId = 5L;
         String typeComfort = "HIGH_COMFORT";
 
-        String actualResponse = mockMvc.perform(get("/api/guest/filter?typeGender=" + typeGender + "&roomId=" + roomId + "&typeComfort=" + typeComfort))
+        String actualResponse = mockMvc.perform(get("/api/guest?typeGender=" + typeGender + "&roomId=" + roomId + "&typeComfort=" + typeComfort))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -132,7 +132,7 @@ public class GuestControllerTest extends AbstractTestController {
 
         String typeGender = "MALEE";
 
-        var response = mockMvc.perform(get("/api/guest/filter?typeGender=" + typeGender))
+        var response = mockMvc.perform(get("/api/guest?typeGender=" + typeGender))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResponse();
@@ -150,7 +150,7 @@ public class GuestControllerTest extends AbstractTestController {
 
         Long roomId = -500L;
 
-        var response = mockMvc.perform(get("/api/guest/filter?roomId=" + roomId))
+        var response = mockMvc.perform(get("/api/guest?roomId=" + roomId))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResponse();
@@ -168,7 +168,7 @@ public class GuestControllerTest extends AbstractTestController {
 
         String typeComfort = "LUXURYY";
 
-        var response = mockMvc.perform(get("/api/guest/filter?typeComfort=" + typeComfort))
+        var response = mockMvc.perform(get("/api/guest?typeComfort=" + typeComfort))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResponse();

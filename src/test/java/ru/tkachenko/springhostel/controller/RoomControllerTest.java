@@ -50,7 +50,7 @@ public class RoomControllerTest extends AbstractTestController {
 
         String typeRoom = "FEMALE";
 
-        String actualResponse = mockMvc.perform(get("/api/room/filter?typeRoom=" + typeRoom))
+        String actualResponse = mockMvc.perform(get("/api/room?typeRoom=" + typeRoom))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -72,7 +72,7 @@ public class RoomControllerTest extends AbstractTestController {
 
         String typeComfort = "HIGH_COMFORT";
 
-        String actualResponse = mockMvc.perform(get("/api/room/filter?typeComfort=" + typeComfort))
+        String actualResponse = mockMvc.perform(get("/api/room?typeComfort=" + typeComfort))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -92,7 +92,7 @@ public class RoomControllerTest extends AbstractTestController {
     @Order(1)
     public void whenFindAllWithVacantFilter_thenReturnFilteredRooms() throws Exception {
 
-        String actualResponse = mockMvc.perform(get("/api/room/filter?hasVacant=" + true))
+        String actualResponse = mockMvc.perform(get("/api/room?hasVacant=" + true))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -115,7 +115,7 @@ public class RoomControllerTest extends AbstractTestController {
         String typeRoom = "FEMALE";
         String typeComfort = "HIGH_COMFORT";
 
-        String actualResponse = mockMvc.perform(get("/api/room/filter?typeRoom=" + typeRoom + "&typeComfort=" + typeComfort + "&hasVacant=" + true))
+        String actualResponse = mockMvc.perform(get("/api/room?typeRoom=" + typeRoom + "&typeComfort=" + typeComfort + "&hasVacant=" + true))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -138,7 +138,7 @@ public class RoomControllerTest extends AbstractTestController {
 
         String typeRoom = "FEMALEE";
 
-        var response = mockMvc.perform(get("/api/room/filter?typeRoom=" + typeRoom))
+        var response = mockMvc.perform(get("/api/room?typeRoom=" + typeRoom))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResponse();
@@ -156,7 +156,7 @@ public class RoomControllerTest extends AbstractTestController {
 
         String typeComfort = "HIGH_COMFORTT";
 
-        var response = mockMvc.perform(get("/api/room/filter?typeComfort=" + typeComfort))
+        var response = mockMvc.perform(get("/api/room?typeComfort=" + typeComfort))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResponse();

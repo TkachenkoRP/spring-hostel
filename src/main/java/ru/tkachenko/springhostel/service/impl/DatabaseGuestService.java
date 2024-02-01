@@ -21,13 +21,8 @@ public class DatabaseGuestService implements GuestService {
     private final GuestRepository repository;
 
     @Override
-    public List<Guest> filterBy(GuestFilter filter) {
+    public List<Guest> findAll(GuestFilter filter) {
         return repository.findAll(GuestSpecification.withFilter(filter));
-    }
-
-    @Override
-    public List<Guest> findAll() {
-        return repository.findAll();
     }
 
     @Override

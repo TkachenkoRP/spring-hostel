@@ -6,9 +6,8 @@ import ru.tkachenko.springhostel.model.Guest;
 import java.util.List;
 
 public interface GuestService {
-    List<Guest> filterBy(GuestFilter filter);
 
-    List<Guest> findAll();
+    List<Guest> findAll(GuestFilter filter);
 
     Guest findById(Long id);
 
