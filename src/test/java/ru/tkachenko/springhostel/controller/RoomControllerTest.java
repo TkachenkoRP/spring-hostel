@@ -466,6 +466,22 @@ public class RoomControllerTest extends AbstractTestController {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @Order(5)
+    public void whenDeleteRoomByIdWithGuests_thenReturnError() throws Exception {
+        var response = mockMvc.perform(delete("/api/room/1"))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/fail_room_delete.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
     private static Stream<Arguments> invalidNumbers() {
         return Stream.of(
                 Arguments.of(-1),

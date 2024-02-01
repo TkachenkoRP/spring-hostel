@@ -2,6 +2,7 @@ package ru.tkachenko.springhostel.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.tkachenko.springhostel.aop.RoomDeleteCheck;
 import ru.tkachenko.springhostel.dto.RoomFilter;
 import ru.tkachenko.springhostel.exception.EntityNotFoundException;
 import ru.tkachenko.springhostel.model.Room;
@@ -50,6 +51,7 @@ public class DatabaseRoomService implements RoomService {
     }
 
     @Override
+    @RoomDeleteCheck
     public void delete(Long id) {
         repository.deleteById(id);
     }

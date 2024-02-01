@@ -1,7 +1,6 @@
 package ru.tkachenko.springhostel.aop;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -15,9 +14,8 @@ import ru.tkachenko.springhostel.service.RoomService;
 
 @Aspect
 @Component
-@Slf4j
 @RequiredArgsConstructor
-public class RoomTypeGenderCheckAspect {
+public class RoomAllocationCheckAspect {
     private final RoomService roomService;
 
     @Before("@annotation(RoomAllocationCheck)")

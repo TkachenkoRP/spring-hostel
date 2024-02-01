@@ -11,6 +11,7 @@ import ru.tkachenko.springhostel.dto.ErrorResponse;
 import ru.tkachenko.springhostel.exception.EntityNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import ru.tkachenko.springhostel.exception.RoomAllocationException;
+import ru.tkachenko.springhostel.exception.RoomDeleteException;
 
 import java.util.List;
 
@@ -45,5 +46,13 @@ public class ExceptionHandlerController {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(e.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(RoomDeleteException.class)
+    public ResponseEntity<ErrorResponse> dontDelete(RoomDeleteException e) {
+        log.error("Ошибка удаления комнаты", e);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getMessage()));
     }
 }
