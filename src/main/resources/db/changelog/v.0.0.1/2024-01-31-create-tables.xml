@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <changeSet author="TkachenkoRP" id="2023-01-31-createRoomTable">
+    <changeSet author="TkachenkoRP" id="2024-01-31-createRoomTable">
         <createTable tableName="rooms">
             <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
@@ -19,7 +19,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="TkachenkoRP" id="2023-01-31-createGuestTable">
+    <changeSet author="TkachenkoRP" id="2024-01-31-createGuestTable">
         <createTable tableName="guests">
             <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true"/>
@@ -36,7 +36,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="TkachenkoRP" id="2023-01-31-changeGenderColumn">
+    <changeSet author="TkachenkoRP" id="2024-01-31-changeGenderColumn">
         <renameColumn tableName="guests" oldColumnName="gender" newColumnName="gender_type"/>
     </changeSet>
 
