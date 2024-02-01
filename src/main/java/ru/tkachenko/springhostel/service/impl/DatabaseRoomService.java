@@ -2,9 +2,11 @@ package ru.tkachenko.springhostel.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.tkachenko.springhostel.dto.RoomFilter;
 import ru.tkachenko.springhostel.exception.EntityNotFoundException;
 import ru.tkachenko.springhostel.model.Room;
 import ru.tkachenko.springhostel.repository.RoomRepository;
+import ru.tkachenko.springhostel.repository.RoomSpecification;
 import ru.tkachenko.springhostel.service.RoomService;
 import ru.tkachenko.springhostel.utils.BeanUtils;
 
@@ -16,6 +18,11 @@ import java.util.List;
 public class DatabaseRoomService implements RoomService {
 
     private final RoomRepository repository;
+
+    @Override
+    public List<Room> filterBy(RoomFilter filter) {
+        return repository.findAll(RoomSpecification.withFilter(filter));
+    }
 
     @Override
     public List<Room> findAll() {

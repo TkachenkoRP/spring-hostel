@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.tkachenko.springhostel.dto.RoomFilter;
 import ru.tkachenko.springhostel.dto.RoomForListResponse;
 import ru.tkachenko.springhostel.dto.RoomResponse;
 import ru.tkachenko.springhostel.dto.UpsertRoomRequest;
@@ -21,6 +22,13 @@ import java.util.stream.Collectors;
 public class RoomController {
     private final RoomService roomService;
     private final RoomMapper roomMapper;
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<RoomForListResponse>> filterBy(RoomFilter filter) {
+        return ResponseEntity.ok(roomService.filterBy(filter)
+                .stream().map(roomMapper::entityToResponseForList)
+                .collect(Collectors.toList()));
+    }
 
     @GetMapping
     public ResponseEntity<List<RoomForListResponse>> findAll() {
