@@ -2,7 +2,6 @@ package ru.tkachenko.springhostel.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +22,5 @@ public class UpsertGuestRequest {
     @ValueOfEnum(enumClass = GenderType.class, message = "Неверно указан пол гостя (MALE, FEMALE)!")
     private String genderType;
     @NotNull(message = "Укажите ID комнаты заселения!")
-    @Positive(message = "ID должно быть больше 1!")
     private Long roomId;
 }

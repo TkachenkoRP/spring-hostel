@@ -24,7 +24,7 @@ public class UpsertRoomRequest {
     @ValueOfEnum(enumClass = RoomType.class, message = "Неверно указан тип комнаты (MALE, FEMALE)!")
     private String typeRoom;
     @NotNull(message = "Укажите тип комфорта комнаты (STANDARD, HIGH_COMFORT, LUXURY)!")
-    @ValueOfEnum(enumClass = ComfortType.class, message = "Неверно указан тип комфорта (STANDARD, HIGH_COMFORT, LUXURY)!!")
+    @ValueOfEnum(enumClass = ComfortType.class, message = "Неверно указан тип комфорта (STANDARD, HIGH_COMFORT, LUXURY)!")
     private String comfortType;
     @Min(value = 1, message = "Количество мест в комнате должно быть больше {value}!")
     private byte capacity;

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,5 +20,5 @@ public class RoomResponse {
     private Byte capacity;
     private Instant createAt;
     private Instant updateAt;
-    private List<GuestForRoomResponse> guests;
+    private List<GuestForRoomResponse> guests = new ArrayList<>();
 }
