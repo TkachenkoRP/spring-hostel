@@ -22,18 +22,18 @@ public class RoomAllocationCheckAspect {
     public void checkRoomAllocation(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
-
             if (arg instanceof Guest guest) {
 
                 Room room = roomService.findById(guest.getRoom().getId());
 
                 if (room.getTypeRoom() != null && guest.getGenderType() != null) {
-
                     if ((room.getTypeRoom() == RoomType.FEMALE && guest.getGenderType() == GenderType.MALE) ||
                             (room.getTypeRoom() == RoomType.MALE && guest.getGenderType() == GenderType.FEMALE)) {
                         throw new RoomAllocationException("Несоответствие типа комнаты и пола гостя!");
                     }
+                }
 
+                if (room.getGuests().stream().noneMatch(g -> g.getId().equals(guest.getId()))) {
                     if (room.getCapacity() <= room.getGuests().size()) {
                         throw new RoomAllocationException("Комната заполнена, нет свободных мест!");
                     }

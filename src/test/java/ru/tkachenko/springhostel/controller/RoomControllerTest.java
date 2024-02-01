@@ -41,7 +41,7 @@ public class RoomControllerTest extends AbstractTestController {
         List<RoomForListResponse> roomResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
         });
 
-        assertEquals(7, roomResponses.size());
+        assertEquals(8, roomResponses.size());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class RoomControllerTest extends AbstractTestController {
         List<RoomForListResponse> roomResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
         });
 
-        assertEquals(6, roomResponses.size());
+        assertEquals(7, roomResponses.size());
 
         for (RoomForListResponse response : roomResponses) {
             assertTrue(response.getGuestsCount() < response.getCapacity());
@@ -223,7 +223,7 @@ public class RoomControllerTest extends AbstractTestController {
                 .getContentAsString();
 
         RoomResponse response = objectMapper.readValue(actualResponse, RoomResponse.class);
-        assertEquals(8L, response.getId());
+        assertEquals(9L, response.getId());
         assertNotNull(response.getCreateAt());
         assertNotNull(response.getUpdateAt());
     }

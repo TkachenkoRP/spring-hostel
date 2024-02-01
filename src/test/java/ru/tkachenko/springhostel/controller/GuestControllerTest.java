@@ -457,9 +457,9 @@ public class GuestControllerTest extends AbstractTestController {
         request.setFirstName("newFirstName");
         request.setMiddleName("newMiddleName");
         request.setGenderType("FEMALE");
-        request.setRoomId(2L);
+        request.setRoomId(3L);
 
-        String actualResponse = mockMvc.perform(put("/api/guest/16")
+        String actualResponse = mockMvc.perform(put("/api/guest/9")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -468,12 +468,12 @@ public class GuestControllerTest extends AbstractTestController {
                 .getContentAsString();
 
         GuestResponse response = objectMapper.readValue(actualResponse, GuestResponse.class);
-        assertEquals(16L, response.getId());
+        assertEquals(9L, response.getId());
         assertEquals("newLastName", response.getLastName());
         assertEquals("FEMALE", response.getGenderType().name());
         assertNotNull(response.getCreateAt());
         assertNotNull(response.getUpdateAt());
-        assertEquals(2L, response.getRoom().getId());
+        assertEquals(3L, response.getRoom().getId());
 
 
         LocalDate today = LocalDate.now();
@@ -533,13 +533,45 @@ public class GuestControllerTest extends AbstractTestController {
     }
 
     @Test
+    public void whenUpdateGuestInOccupiedRoomHeFromHer_thenReturnError() throws Exception {
+        UpsertGuestRequest request = new UpsertGuestRequest();
+        request.setLastName("newLastName");
+        request.setFirstName("newFirstName");
+        request.setMiddleName("newMiddleName");
+        request.setGenderType("FEMALE");
+        request.setRoomId(7L);
+
+        var actualResponse = mockMvc.perform(put("/api/guest/15")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        GuestResponse response = objectMapper.readValue(actualResponse, GuestResponse.class);
+        assertEquals(15L, response.getId());
+        assertEquals("newLastName", response.getLastName());
+        assertEquals("FEMALE", response.getGenderType().name());
+        assertEquals(7L, response.getRoom().getId());
+
+
+        LocalDate today = LocalDate.now();
+        LocalDate updateDate = response.getUpdateAt().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        assertEquals(today.getYear(), updateDate.getYear());
+        assertEquals(today.getMonth(), updateDate.getMonth());
+        assertEquals(today.getDayOfMonth(), updateDate.getDayOfMonth());
+    }
+
+    @Test
     @Order(5)
     public void whenDeleteGuestById_thenReturnStatusNoContent() throws Exception {
-        mockMvc.perform(get("/api/guest/16"))
+        mockMvc.perform(get("/api/guest/13"))
                 .andExpect(status().isOk());
-        mockMvc.perform(delete("/api/guest/16"))
+        mockMvc.perform(delete("/api/guest/13"))
                 .andExpect(status().isNoContent());
-        mockMvc.perform(get("/api/guest/16"))
+        mockMvc.perform(get("/api/guest/13"))
                 .andExpect(status().isNotFound());
     }
 }
