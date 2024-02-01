@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.tkachenko.springhostel.dto.GuestFilter;
 import ru.tkachenko.springhostel.dto.GuestForListResponse;
 import ru.tkachenko.springhostel.dto.GuestResponse;
 import ru.tkachenko.springhostel.dto.UpsertGuestRequest;
@@ -21,6 +22,13 @@ import java.util.stream.Collectors;
 public class GuestController {
     private final GuestService guestService;
     private final GuestMapper guestMapper;
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<GuestForListResponse>> filterBy(GuestFilter filter) {
+        return ResponseEntity.ok(guestService.filterBy(filter)
+                .stream().map(guestMapper::entityToResponseList)
+                .collect(Collectors.toList()));
+    }
 
     @GetMapping
     public ResponseEntity<List<GuestForListResponse>> findAll() {
