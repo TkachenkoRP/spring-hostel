@@ -21,8 +21,7 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,6 +42,131 @@ public class RoomControllerTest extends AbstractTestController {
         });
 
         assertEquals(7, roomResponses.size());
+    }
+
+    @Test
+    @Order(1)
+    public void whenFindAllWithTypeRoomFilter_thenReturnFilteredRooms() throws Exception {
+
+        String typeRoom = "FEMALE";
+
+        String actualResponse = mockMvc.perform(get("/api/room/filter?typeRoom=" + typeRoom))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<RoomForListResponse> roomResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
+        });
+
+        assertEquals(4, roomResponses.size());
+
+        for (RoomForListResponse response : roomResponses) {
+            assertEquals(typeRoom, response.getTypeRoom().name());
+        }
+    }
+
+    @Test
+    @Order(1)
+    public void whenFindAllWithTypeComfortFilter_thenReturnFilteredRooms() throws Exception {
+
+        String typeComfort = "HIGH_COMFORT";
+
+        String actualResponse = mockMvc.perform(get("/api/room/filter?typeComfort=" + typeComfort))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<RoomForListResponse> roomResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
+        });
+
+        assertEquals(4, roomResponses.size());
+
+        for (RoomForListResponse response : roomResponses) {
+            assertEquals(typeComfort, response.getComfortType().name());
+        }
+    }
+
+    @Test
+    @Order(1)
+    public void whenFindAllWithVacantFilter_thenReturnFilteredRooms() throws Exception {
+
+        String actualResponse = mockMvc.perform(get("/api/room/filter?hasVacant=" + true))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<RoomForListResponse> roomResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
+        });
+
+        assertEquals(6, roomResponses.size());
+
+        for (RoomForListResponse response : roomResponses) {
+            assertTrue(response.getGuestsCount() < response.getCapacity());
+        }
+    }
+
+    @Test
+    @Order(1)
+    public void whenFindAllWithAllFilter_thenReturnFilteredRooms() throws Exception {
+
+        String typeRoom = "FEMALE";
+        String typeComfort = "HIGH_COMFORT";
+
+        String actualResponse = mockMvc.perform(get("/api/room/filter?typeRoom=" + typeRoom + "&typeComfort=" + typeComfort + "&hasVacant=" + true))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<RoomForListResponse> roomResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
+        });
+
+        assertEquals(2, roomResponses.size());
+
+        for (RoomForListResponse response : roomResponses) {
+            assertEquals(typeRoom, response.getTypeRoom().name());
+            assertEquals(typeComfort, response.getComfortType().name());
+            assertTrue(response.getGuestsCount() < response.getCapacity());
+        }
+    }
+
+    @Test
+    public void whenFindAllWithWrongTypeRoomFilter_thenReturnError() throws Exception {
+
+        String typeRoom = "FEMALEE";
+
+        var response = mockMvc.perform(get("/api/room/filter?typeRoom=" + typeRoom))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/wrong_type_room.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
+    @Test
+    public void whenFindAllWithWrongTypeComfortFilter_thenReturnError() throws Exception {
+
+        String typeComfort = "HIGH_COMFORTT";
+
+        var response = mockMvc.perform(get("/api/room/filter?typeComfort=" + typeComfort))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/wrong_comfort_type_room.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
     }
 
     @Test
@@ -173,7 +297,7 @@ public class RoomControllerTest extends AbstractTestController {
         response.setCharacterEncoding("UTF-8");
 
         String actualResponse = response.getContentAsString();
-        String expectResponse = StringTestUtils.readStringFromResource("response/create_room_with_wrong_data_type_room.json");
+        String expectResponse = StringTestUtils.readStringFromResource("response/wrong_type_room.json");
 
         JsonAssert.assertJsonEquals(expectResponse, actualResponse);
     }
@@ -220,7 +344,7 @@ public class RoomControllerTest extends AbstractTestController {
         response.setCharacterEncoding("UTF-8");
 
         String actualResponse = response.getContentAsString();
-        String expectResponse = StringTestUtils.readStringFromResource("response/create_room_with_wrong_data_comfort_type.json");
+        String expectResponse = StringTestUtils.readStringFromResource("response/wrong_comfort_type_room.json");
 
         JsonAssert.assertJsonEquals(expectResponse, actualResponse);
     }

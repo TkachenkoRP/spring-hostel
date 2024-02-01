@@ -24,7 +24,7 @@ public class RoomController {
     private final RoomMapper roomMapper;
 
     @GetMapping("/filter")
-    public ResponseEntity<List<RoomForListResponse>> filterBy(RoomFilter filter) {
+    public ResponseEntity<List<RoomForListResponse>> filterBy(@Valid RoomFilter filter) {
         return ResponseEntity.ok(roomService.filterBy(filter)
                 .stream().map(roomMapper::entityToResponseForList)
                 .collect(Collectors.toList()));
