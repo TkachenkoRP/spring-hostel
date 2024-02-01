@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.tkachenko.springhostel.dto.ErrorResponse;
 import ru.tkachenko.springhostel.exception.EntityNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import ru.tkachenko.springhostel.exception.RoomAllocationException;
 
 import java.util.List;
 
@@ -36,5 +37,13 @@ public class ExceptionHandlerController {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(errorMessage));
+    }
+
+    @ExceptionHandler(RoomAllocationException.class)
+    public ResponseEntity<ErrorResponse> notAddedGuest(RoomAllocationException e) {
+        log.error("Ошибка при попытке доабавления гостя", e);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getLocalizedMessage()));
     }
 }

@@ -402,6 +402,54 @@ public class GuestControllerTest extends AbstractTestController {
     }
 
     @Test
+    public void whenCreateGuestWithWrongRoomType_thenReturnError() throws Exception {
+        UpsertGuestRequest request = new UpsertGuestRequest();
+        request.setLastName("newLastName");
+        request.setFirstName("newFirstName");
+        request.setMiddleName("newMiddleName");
+        request.setGenderType("FEMALE");
+        request.setRoomId(1L);
+
+        var response = mockMvc.perform(post("/api/guest")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/guest_with_wrong_room_type.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
+    @Test
+    public void whenCreateGuestInOccupiedRoom_thenReturnError() throws Exception {
+        UpsertGuestRequest request = new UpsertGuestRequest();
+        request.setLastName("newLastName");
+        request.setFirstName("newFirstName");
+        request.setMiddleName("newMiddleName");
+        request.setGenderType("FEMALE");
+        request.setRoomId(7L);
+
+        var response = mockMvc.perform(post("/api/guest")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/guest_in_occupied_room.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
+    @Test
     @Order(4)
     public void whenUpdateGuest_thenReturnUpdatedGuest() throws Exception {
         UpsertGuestRequest request = new UpsertGuestRequest();
@@ -434,6 +482,54 @@ public class GuestControllerTest extends AbstractTestController {
         assertEquals(today.getYear(), updateDate.getYear());
         assertEquals(today.getMonth(), updateDate.getMonth());
         assertEquals(today.getDayOfMonth(), updateDate.getDayOfMonth());
+    }
+
+    @Test
+    public void whenUpdateGuestWithWrongRoomType_thenReturnError() throws Exception {
+        UpsertGuestRequest request = new UpsertGuestRequest();
+        request.setLastName("newLastName");
+        request.setFirstName("newFirstName");
+        request.setMiddleName("newMiddleName");
+        request.setGenderType("FEMALE");
+        request.setRoomId(1L);
+
+        var response = mockMvc.perform(put("/api/guest/3")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/guest_with_wrong_room_type.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
+    @Test
+    public void whenUpdateGuestInOccupiedRoom_thenReturnError() throws Exception {
+        UpsertGuestRequest request = new UpsertGuestRequest();
+        request.setLastName("newLastName");
+        request.setFirstName("newFirstName");
+        request.setMiddleName("newMiddleName");
+        request.setGenderType("FEMALE");
+        request.setRoomId(7L);
+
+        var response = mockMvc.perform(put("/api/guest/3")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/guest_in_occupied_room.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
     }
 
     @Test

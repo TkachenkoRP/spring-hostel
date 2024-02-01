@@ -2,6 +2,7 @@ package ru.tkachenko.springhostel.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.tkachenko.springhostel.aop.RoomAllocationCheck;
 import ru.tkachenko.springhostel.dto.GuestFilter;
 import ru.tkachenko.springhostel.exception.EntityNotFoundException;
 import ru.tkachenko.springhostel.model.Guest;
@@ -38,11 +39,13 @@ public class DatabaseGuestService implements GuestService {
     }
 
     @Override
+    @RoomAllocationCheck
     public Guest save(Guest guest) {
         return repository.save(guest);
     }
 
     @Override
+    @RoomAllocationCheck
     public Guest update(Guest guest) {
         Guest existedGuest = findById(guest.getId());
         BeanUtils.copyNonNullProperties(guest, existedGuest);
