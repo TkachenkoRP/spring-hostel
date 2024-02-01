@@ -37,6 +37,151 @@ public class GuestControllerTest extends AbstractTestController {
     }
 
     @Test
+    @Order(1)
+    public void whenFindAllGuestsWithTypeGenderFilter_thenReturnFilteredGuests() throws Exception {
+
+        String typeGender = "MALE";
+
+        String actualResponse = mockMvc.perform(get("/api/guest/filter?typeGender=" + typeGender))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<GuestForListResponse> guestsResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
+        });
+
+        assertEquals(6, guestsResponses.size());
+
+        for (GuestForListResponse response : guestsResponses) {
+            assertEquals(typeGender, response.getGenderType().name());
+        }
+    }
+
+    @Test
+    @Order(1)
+    public void whenFindAllGuestsWithRoomIdFilter_thenReturnFilteredGuests() throws Exception {
+
+        Long roomId = 4L;
+
+        String actualResponse = mockMvc.perform(get("/api/guest/filter?roomId=" + roomId))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<GuestForListResponse> guestsResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
+        });
+
+        assertEquals(2, guestsResponses.size());
+
+        for (GuestForListResponse response : guestsResponses) {
+            assertEquals(roomId, response.getRoomId());
+        }
+    }
+
+    @Test
+    @Order(1)
+    public void whenFindAllGuestsWithTypeComfortFilter_thenReturnFilteredGuests() throws Exception {
+
+        String typeComfort = "LUXURY";
+
+        String actualResponse = mockMvc.perform(get("/api/guest/filter?typeComfort=" + typeComfort))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<GuestForListResponse> guestsResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
+        });
+
+        assertEquals(2, guestsResponses.size());
+
+        for (GuestForListResponse response : guestsResponses) {
+            assertEquals(6, response.getRoomId());
+        }
+    }
+
+    @Test
+    @Order(1)
+    public void whenFindAllGuestsWithAllFilter_thenReturnFilteredGuests() throws Exception {
+
+        String typeGender = "FEMALE";
+        Long roomId = 5L;
+        String typeComfort = "HIGH_COMFORT";
+
+        String actualResponse = mockMvc.perform(get("/api/guest/filter?typeGender=" + typeGender + "&roomId=" + roomId + "&typeComfort=" + typeComfort))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<GuestForListResponse> guestsResponses = objectMapper.readValue(actualResponse, new TypeReference<>() {
+        });
+
+        assertEquals(3, guestsResponses.size());
+
+        for (GuestForListResponse response : guestsResponses) {
+            assertEquals(roomId, response.getRoomId());
+            assertEquals(typeGender, response.getGenderType().name());
+        }
+    }
+
+    @Test
+    public void whenFindAllGuestsWithWrongTypeGenderFilter_thenReturnError() throws Exception {
+
+        String typeGender = "MALEE";
+
+        var response = mockMvc.perform(get("/api/guest/filter?typeGender=" + typeGender))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/wrong_gender_type_guest.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
+    @Test
+    public void whenFindAllGuestsWithWrongRoomIdFilter_thenReturnError() throws Exception {
+
+        Long roomId = -500L;
+
+        var response = mockMvc.perform(get("/api/guest/filter?roomId=" + roomId))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/wrong_room_id_guest.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
+    @Test
+    public void whenFindAllGuestsWithWrongTypeComfortFilter_thenReturnError() throws Exception {
+
+        String typeComfort = "LUXURYY";
+
+        var response = mockMvc.perform(get("/api/guest/filter?typeComfort=" + typeComfort))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/wrong_comfort_type_room.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
+    @Test
     @Order(2)
     public void whenFindById_thenReturnGuest() throws Exception {
 
