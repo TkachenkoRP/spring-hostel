@@ -7,7 +7,7 @@ import ru.tkachenko.springhostel.dto.UpsertGuestRequest;
 import ru.tkachenko.springhostel.model.Guest;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {RoomMapper.class, RoomMap.class})
+        uses = {RoomMap.class})
 public interface GuestMapper {
     @Mappings({
             @Mapping(target = "room", source = "roomId")
@@ -29,7 +29,8 @@ public interface GuestMapper {
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createAt", ignore = true),
-            @Mapping(target = "updateAt", ignore = true)
+            @Mapping(target = "updateAt", ignore = true),
+            @Mapping(target = "room", source = "sourceGuest.room")
     })
     void updateGuest(Guest sourceGuest, @MappingTarget Guest targetGuest);
 }
