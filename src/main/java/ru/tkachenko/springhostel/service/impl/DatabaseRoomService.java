@@ -6,11 +6,11 @@ import ru.tkachenko.springhostel.dto.RoomFilter;
 import ru.tkachenko.springhostel.exception.EntityNotFoundException;
 import ru.tkachenko.springhostel.exception.RoomDeleteException;
 import ru.tkachenko.springhostel.exception.RoomEditException;
+import ru.tkachenko.springhostel.mapper.RoomMapper;
 import ru.tkachenko.springhostel.model.Room;
 import ru.tkachenko.springhostel.repository.RoomRepository;
 import ru.tkachenko.springhostel.repository.RoomSpecification;
 import ru.tkachenko.springhostel.service.RoomService;
-import ru.tkachenko.springhostel.utils.BeanUtils;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -20,6 +20,7 @@ import java.util.List;
 public class DatabaseRoomService implements RoomService {
 
     private final RoomRepository repository;
+    private final RoomMapper mapper;
 
     @Override
     public List<Room> findAll(RoomFilter filter) {
@@ -45,7 +46,7 @@ public class DatabaseRoomService implements RoomService {
         if (!existedRoom.getGuests().isEmpty() && room.getTypeRoom() != existedRoom.getTypeRoom()) {
             throw new RoomEditException("Нельзя изменить тип комнаты с гостями!");
         }
-        BeanUtils.copyNonNullProperties(room, existedRoom);
+        mapper.updateRoom(room, existedRoom);
         return repository.save(existedRoom);
     }
 

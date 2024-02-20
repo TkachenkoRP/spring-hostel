@@ -25,4 +25,11 @@ public interface GuestMapper {
             @Mapping(target = "roomId", source = "room.id")
     })
     GuestForListResponse entityToResponseList(Guest guest);
+
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createAt", ignore = true),
+            @Mapping(target = "updateAt", ignore = true)
+    })
+    void updateGuest(Guest sourceGuest, @MappingTarget Guest targetGuest);
 }

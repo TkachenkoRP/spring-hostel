@@ -18,4 +18,12 @@ public interface RoomMapper {
             @Mapping(target = "guestsCount", expression = "java(room.getGuests().size())")
     })
     RoomForListResponse entityToResponseForList(Room room);
+
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "guests", ignore = true),
+            @Mapping(target = "createAt", ignore = true),
+            @Mapping(target = "updateAt", ignore = true)
+    })
+    void updateRoom(Room sourceRoom, @MappingTarget Room targetRoom);
 }
