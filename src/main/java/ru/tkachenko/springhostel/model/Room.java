@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -38,5 +39,6 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<Guest> guests;
+    @Builder.Default
+    private List<Guest> guests = new ArrayList<>();
 }

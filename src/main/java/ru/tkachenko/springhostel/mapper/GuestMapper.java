@@ -1,22 +1,28 @@
 package ru.tkachenko.springhostel.mapper;
 
-import org.mapstruct.DecoratedWith;
-import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import ru.tkachenko.springhostel.dto.GuestForListResponse;
 import ru.tkachenko.springhostel.dto.GuestResponse;
 import ru.tkachenko.springhostel.dto.UpsertGuestRequest;
 import ru.tkachenko.springhostel.model.Guest;
 
-@DecoratedWith(GuestMapperDelegate.class)
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {RoomMapper.class})
+        uses = {RoomMapper.class, RoomMap.class})
 public interface GuestMapper {
+    @Mappings({
+            @Mapping(target = "room", source = "roomId")
+    })
     Guest requestToEntity(UpsertGuestRequest request);
 
+    @Mappings({
+            @Mapping(target = "room", source = "request.roomId")
+    })
     Guest requestToEntity(Long id, UpsertGuestRequest request);
 
     GuestResponse entityToResponse(Guest guest);
 
+    @Mappings({
+            @Mapping(target = "roomId", source = "room.id")
+    })
     GuestForListResponse entityToResponseList(Guest guest);
 }
