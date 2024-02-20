@@ -2,9 +2,10 @@ package ru.tkachenko.springhostel.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.tkachenko.springhostel.aop.RoomDeleteCheck;
 import ru.tkachenko.springhostel.dto.RoomFilter;
 import ru.tkachenko.springhostel.exception.EntityNotFoundException;
+import ru.tkachenko.springhostel.exception.RoomDeleteException;
+import ru.tkachenko.springhostel.exception.RoomEditException;
 import ru.tkachenko.springhostel.model.Room;
 import ru.tkachenko.springhostel.repository.RoomRepository;
 import ru.tkachenko.springhostel.repository.RoomSpecification;
@@ -41,13 +42,19 @@ public class DatabaseRoomService implements RoomService {
     @Override
     public Room update(Room room) {
         Room existedRoom = findById(room.getId());
+        if (!existedRoom.getGuests().isEmpty() && room.getTypeRoom() != existedRoom.getTypeRoom()) {
+            throw new RoomEditException("Нельзя изменить тип комнаты с гостями!");
+        }
         BeanUtils.copyNonNullProperties(room, existedRoom);
         return repository.save(existedRoom);
     }
 
     @Override
-    @RoomDeleteCheck
     public void delete(Long id) {
+        Room room = findById(id);
+        if (!room.getGuests().isEmpty()) {
+            throw new RoomDeleteException("Нельзя удалить комнату с гостями!");
+        }
         repository.deleteById(id);
     }
 }

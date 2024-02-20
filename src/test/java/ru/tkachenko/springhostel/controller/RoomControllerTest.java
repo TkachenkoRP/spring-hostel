@@ -402,7 +402,7 @@ public class RoomControllerTest extends AbstractTestController {
         UpsertRoomRequest request = new UpsertRoomRequest();
         request.setFloor((byte) 1);
         request.setRoomNumber((byte) 49);
-        request.setTypeRoom("MALE");
+        request.setTypeRoom("FEMALE");
         request.setComfortType("STANDARD");
         request.setCapacity((byte) 9);
 
@@ -418,7 +418,7 @@ public class RoomControllerTest extends AbstractTestController {
         assertEquals(7L, response.getId());
         assertEquals((byte) 1, response.getFloor());
         assertEquals((byte) 49, response.getRoomNumber());
-        assertEquals("MALE", response.getTypeRoom());
+        assertEquals("FEMALE", response.getTypeRoom());
         assertEquals("STANDARD", response.getComfortType());
         assertEquals((byte) 9, response.getCapacity());
 
@@ -451,6 +451,30 @@ public class RoomControllerTest extends AbstractTestController {
 
         String actualResponse = response.getContentAsString();
         String expectResponse = StringTestUtils.readStringFromResource("response/wrong_room_id_500_not_found_response.json");
+
+        JsonAssert.assertJsonEquals(expectResponse, actualResponse);
+    }
+
+    @Test
+    public void whenUpdateRoomWithWrongTypeAndWithGuest_thenReturnError() throws Exception {
+        UpsertRoomRequest request = new UpsertRoomRequest();
+        request.setFloor((byte) 1);
+        request.setRoomNumber((byte) 49);
+        request.setTypeRoom("MALE");
+        request.setComfortType("STANDARD");
+        request.setCapacity((byte) 9);
+
+        var response = mockMvc.perform(put("/api/room/7")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectResponse = StringTestUtils.readStringFromResource("response/fail_room_update.json");
 
         JsonAssert.assertJsonEquals(expectResponse, actualResponse);
     }
